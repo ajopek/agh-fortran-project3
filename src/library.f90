@@ -1,26 +1,14 @@
-module library
-    /**
-    @mainpage Basic matrix operation library
-    
-    @section Introduction
-        This document describes the source code for the matrix operation library.
-    */    
+module library   
 contains
     !---------------------------------------------------------------------------  
     !> @author 
     !> Artur Jopek
     !
     ! DESCRIPTION: 
-    !> Brief description of routine. 
-    !> @brief
-    !> Flow method (rate of change of position) used by integrator.
-    !> Compute \f$ \frac{d\lambda}{dt} , \frac{d\phi}{dt},  \frac{dz}{dt} \f$
-    !
-    ! REVISION HISTORY:
-    ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
-    !
-    !> @param[in] inParam      
-    !> @param[out] outParam      
+    !> Performs gaussian elimination on square matricies
+    !> @param[in] coef_matrix - coefitients matrix
+    !> @param[out] val_matrix - values matrix
+    !> @param[int] matrix_dim - matrix dimmension     
     !--------------------------------------------------------------------------- 
     subroutine gaussian_elimination(coef_matrix, val_matrix, matrix_dim)
         implicit none
@@ -48,16 +36,12 @@ contains
     !> Artur Jopek
     !
     ! DESCRIPTION: 
-    !> Brief description of routine. 
+    !> Multiply maticies 
     !> @brief
-    !> Flow method (rate of change of position) used by integrator.
-    !> Compute \f$ \frac{d\lambda}{dt} , \frac{d\phi}{dt},  \frac{dz}{dt} \f$
-    !
-    ! REVISION HISTORY:
-    ! TODO_dd_mmm_yyyy - TODO_describe_appropriate_changes - TODO_name
-    !
-    !> @param[in] inParam      
-    !> @param[out] outParam      
+    !> @param[in] first - first matrix
+    !> @param[in] second - second matrix      
+    !> @param[out] multiply - result of multiplication
+    !> @param[out] status - 0 if ok, 1 if error
     !--------------------------------------------------------------------------- 
     subroutine mm(first, second, multiply, status)
         implicit none
