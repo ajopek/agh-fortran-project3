@@ -131,59 +131,6 @@ end subroutine
             end do
         end if
     end subroutine
-
-    !---------------------------------------------------------------------------  
-    !> @author 
-    !> Artur Jopek
-    !
-    ! DESCRIPTION: 
-    !> Performs gaussian elimination on square matricies
-    !> @param[in] coef_matrix - coefitients matrix
-    !> @param[out] val_matrix - values matrix
-    !> @param[int] matrix_dim - matrix dimmension     
-    !--------------------------------------------------------------------------- 
-    subroutine gaussian_elimination(A, X, n)
-        integer(kind=4), intent(in) :: n
-        real(kind = 8), intent(inout) :: A(0:N, 0:N), X(0:N)
-        real ( kind = 8), codimension[:], allocatable :: coA(:,:)
-        real ( kind = 8), codimension[:], allocatable :: coX(:)
-        real(kind = 8) :: ratio
-        integer(kind=8) :: i, j
-
-        allocate(coA(0:N, 0:N)[*])
-        allocate(coX(0:N)[*])
-
-        if (THIS_IMAGE() .eq. 1) then
-            coA(:,:)[1] = A(:,:)
-            coX(:)[1] = X(:)
-        end if
-
-        do i = 0, N
-            ! scale to get 1's on diagonal
-            if(THIS_IMAGE() .eq. 1) then
-                coX(i)[1] = coX(i)[1] / coA(i, i)[1]
-                coA(:, i)[1] = coA(:, i)[1] / coA(i, i)[1]
-            end if
-            sync all
-            do j = THIS_IMAGE() - 1, N, NUM_IMAGES()
-                if ((i .NE. j) .AND. (ABS(coA(i, i)[1] - 0) > 1d-6)) then
-                    ratio = coA(i, j)[1] / coA(i, i)[1]
-                    coA(:,j)[1] = coA(:,j)[1] - ratio * coA(:, i)[1]
-                    coX(j)[1] = coX(j)[1] - ratio * coX(i)[1]
-                end if
-            end do
-        end do
-        
-
-        if (THIS_IMAGE() .eq. 1) then
-          A(:,:) = coA(:,:)[1] 
-          X(:) = coX(:)[1] 
-        end if
-
-        deallocate(coA)
-        deallocate(coX)
-      end subroutine
-
 #endif
 
 end module library
